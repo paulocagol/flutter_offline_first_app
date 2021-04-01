@@ -6,13 +6,11 @@ class TodoStore with Store {
   TodoRepository repository = TodoRepository();
   List<Todo> todos;
 
-  Future<List<Todo>> getTodos() async {
+  Future<List<Todo>> 
+  
+  getTodos() async {
     List<Todo> todos;
     todos = await repository.loadTodos();
-    print(todos);
-
     return todos; 
   }
-
-  // Future<Todo> getTodo(int id) async => currentTodo = await repository.getTodo(id);
 }

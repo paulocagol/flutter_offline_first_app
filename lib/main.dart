@@ -19,36 +19,7 @@ TodoStore todoStore = TodoStore();
 
 class _HomeAppState extends State<HomeApp> {
   Future<List<Todo>> _getAllTodos() async {
-    // print('****');
-    List<Todo> todos = List<Todo>();
-    List<Todo> todosR = List<Todo>();
-    Todo todo1 = Todo.add(id: '1', completed: 1);
-    todos.add(todo1);
-    Todo todo2 = Todo.add(id: '1', completed: 1);
-    todos.add(todo2);
-    Todo todo3 = Todo.add(id: '1', completed: 1);
-    todos.add(todo3);
-
-    todos = await todoStore.getTodos();
-    setState(() {
-      todos.forEach((item) {
-        todosR.add(item);
-      });
-    });
-    return todosR;
-  }
-
-  Future<List<String>> _getData() async {
-    var values = new List<String>();
-    values.add("Horses");
-    values.add("Goats");
-    values.add("Chickens");
-
-    //throw new Exception("Danger Will Robinson!!!");
-
-    await new Future.delayed(new Duration(seconds: 5));
-
-    return values;
+    return todoStore.getTodos();
   }
 
   @override
@@ -62,7 +33,6 @@ class _HomeAppState extends State<HomeApp> {
           future: _getAllTodos(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              print('center de cima');
               return CircularProgressIndicator();
             } else if (snapshot.data.isNotEmpty) {
               return ListView.builder(
@@ -77,7 +47,6 @@ class _HomeAppState extends State<HomeApp> {
                 },
               );
             } else {
-              print('center de baixo');
               return Center(child: CircularProgressIndicator());
             }
           },

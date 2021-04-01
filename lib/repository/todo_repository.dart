@@ -7,12 +7,9 @@ class TodoRepository extends Repository {
     await initStore();
     try {
       List<Todo> newTodo = await todoService.getTodos();
-      print(newTodo);
       connected = true;
-      await  addNoneExisting(store.todoDao, newTodo);
+      await addNoneExisting(store.todoDao, newTodo);
       await removeNoneExisting(store.todoDao, newTodo);
-      print('..');
-      
       return await store.todoDao.getAll();
     } catch (_) {
       return await store.todoDao.getAll();

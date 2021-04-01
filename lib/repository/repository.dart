@@ -15,12 +15,10 @@ class Repository {
   }
 
   addNoneExisting(DaoHelper dao, List<dynamic> list) async {
-    print('teste');
     await dao.insertAll(list);
   }
 
   removeNoneExisting(DaoHelper dao, List<dynamic> items) async {
-    print(items);
     await dao.removeNoneExisting(items);
   }
 }

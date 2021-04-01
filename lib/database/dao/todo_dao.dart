@@ -14,9 +14,14 @@ class TodoDao implements DaoHelper {
   createTable(Database database) async {
     try {
       await database.execute(
-        "CREATE TABLE TODO "
-        "(ID TEXT, "
-        " COMPLETED INTEGER)",
+        'CREATE TABLE TODO    '
+        '(                    '
+        ' ID TEXT,            '
+        ' COMPLETED INTEGER,  '
+        ' CREATEDAT DATETIME, '
+        ' UPDATEDAT DATETIME, '
+        ' VERSION INTEGER     '
+        ');                   ',
       );
     } on Exception catch (e) {
       print('Create Table error $e');
@@ -30,6 +35,9 @@ class TodoDao implements DaoHelper {
       columns: [
         'ID',
         'COMPLETED',
+        'CREATEDAT',
+        'UPDATEDAT',
+        'VERSION',
       ],
       where: 'ID = ?',
       whereArgs: [id],
@@ -41,7 +49,13 @@ class TodoDao implements DaoHelper {
     try {
       List<Map> maps = await db.query(
         'TODO',
-        columns: ['ID', 'COMPLETED'],
+        columns: [
+          'ID',
+          'COMPLETED',
+          'CREATEDAT',
+          'UPDATEDAT',
+          'VERSION',
+        ],
       );
       if (maps.length > 0) {
         return maps.map((map) => Todo.fromMap(map)).toList();
@@ -53,21 +67,24 @@ class TodoDao implements DaoHelper {
 
   @override
   insert(item) async {
-    print('insert');
     if (item is Todo) {
       try {
-        print('banco');
-        print(db);
-        item.id = await db.insert('TODO', {'id': 'teste', 'completed': 1}).toString();
+        item.id = db.insert('TODO', item.toMap()).toString();
       } catch (_) {
-        print(_);
+        update(item);
       }
     }
 
     try {
       List<Map> maps = await db.query(
         'TODO',
-        columns: ['ID', 'COMPLETED'],
+        columns: [
+          'ID',
+          'COMPLETED',
+          'CREATEDAT',
+          'UPDATEDAT',
+          'VERSION',
+        ],
       );
       if (maps.length > 0) {
         return maps.map((map) => Todo.fromMap(map)).toList();

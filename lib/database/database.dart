@@ -28,7 +28,6 @@ class DataStore implements DataStoreHelper {
     if (dbExists) {
       await Directory(databasesPath).create(recursive: true);
     }
-    print('treta ta aqui');
     db = await openDatabase(path, version: 1, onCreate: create);
     
     createDaos();
