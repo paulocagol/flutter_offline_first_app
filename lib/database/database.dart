@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class DataStore implements DataStoreHelper {
-  String dbName = 'todo.db';
+  String dbName = 'todo1.db';
   String path = '';
 
   Database db;

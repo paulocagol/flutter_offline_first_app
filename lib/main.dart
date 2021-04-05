@@ -41,7 +41,7 @@ class _HomeAppState extends State<HomeApp> {
                   Todo todo = snapshot.data[index];
                   return Column(
                     children: <Widget>[
-                      Text(todo.id.toString()),
+                      Text(todo.id.toString() + ' - ' + todo.createdAt.toString()),
                     ],
                   );
                 },

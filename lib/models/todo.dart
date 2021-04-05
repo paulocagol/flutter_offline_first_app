@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Todo {
   String id;
   int completed;
@@ -55,13 +57,20 @@ class Todo {
   }
 
   factory Todo.fromJson(Map<String, dynamic> json) {
-    Todo todo = Todo();
-    todo.id = json['objectId'];
-    todo.completed = json['completed'];
-    todo.createdAt = json['createdAt'];
-    todo.updatedAt = json['updatedAt'];
-    todo.version = json['version'];
-    return todo;
+    try {
+
+      Todo todo = Todo();
+      todo.id = json['objectId'].toString();
+      todo.completed = json['completed'] == 'false' ? 0 : 1;
+      todo.version = int.tryParse(json['version'].toString());
+      todo.createdAt = DateTime.parse('2021-03-30 01:20:13'); //DateFormat("yyyy-MM-dd hh:mm:ss").parse(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(json['createdAt']).toString());
+      todo.updatedAt = DateTime.parse('2021-03-30 01:20:13');
+      return todo;
+    } on Exception catch (e) {
+      print(e);
+    }
+
+    return null;
   }
 
   Map<String, dynamic> toJson() => {

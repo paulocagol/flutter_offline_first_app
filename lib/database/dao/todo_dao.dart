@@ -18,8 +18,8 @@ class TodoDao implements DaoHelper {
         '(                    '
         ' ID TEXT,            '
         ' COMPLETED INTEGER,  '
-        ' CREATEDAT DATETIME, '
-        ' UPDATEDAT DATETIME, '
+        ' CREATEDAT TEXT,     '
+        ' UPDATEDAT TEXT,     '
         ' VERSION INTEGER     '
         ');                   ',
       );
@@ -69,7 +69,18 @@ class TodoDao implements DaoHelper {
   insert(item) async {
     if (item is Todo) {
       try {
-        item.id = db.insert('TODO', item.toMap()).toString();
+        print(item);
+        item.id = db
+            .insert('TODO', item.toMap()
+                // {
+                //   'ID': item.id,
+                //   'COMPLETED': item.completed,
+                //   'CREATEDAT': item.createdAt.toString(),// parse(item.createdAt.toString().substring(0, 19)),
+                //   'UPDATEDAT': item.createdAt.toString(),//DateTime.parse(item.updatedAt.toString().substring(0, 19)),
+                //   'VERSION': item.version,
+                // },
+                )
+            .toString();
       } catch (_) {
         update(item);
       }
