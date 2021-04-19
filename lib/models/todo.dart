@@ -1,45 +1,45 @@
 import 'package:intl/intl.dart';
 
 class Todo {
-  String id;
-  int completed;
+  int id;
+  String task;
   DateTime createdAt;
   DateTime updatedAt;
-  int version;
+  int sync;
 
   Todo();
 
   Todo.add({
     this.id,
-    this.completed,
+    this.task,
     this.createdAt,
     this.updatedAt,
-    this.version,
+    this.sync,
   });
 
   Todo copyWith({
-    String id,
-    int completed,
+    int id,
+    String task,
     DateTime createdAt,
     DateTime updatedAt,
-    int version,
+    int sync,
   }) {
     return Todo.add(
       id: id,
-      completed: completed,
+      task: task,
       createdAt: createdAt,
       updatedAt: updatedAt,
-      version: version,
+      sync: sync,
     );
   }
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       'ID': id,
-      'COMPLETED': completed,
+      'TASK': task,
       'CREATEDAT': createdAt,
       'UPDATEDAT': updatedAt,
-      'VERSION': version,
+      'VERSION': sync,
     };
     if (id != null) {
       map['ID'] = id;
@@ -50,21 +50,29 @@ class Todo {
 
   Todo.fromMap(Map<String, dynamic> map) {
     id = map['ID'];
-    completed = map['COMPLETED'];
-    createdAt = map['CREATEDAT'];
-    updatedAt = map['UPDATEDAT'];
-    version = map['VERSION'];
+    task = map['task'];
+    createdAt = DateTime.parse(map['CREATEDAT']);
+    updatedAt = DateTime.parse(map['UPDATEDAT']);
+    sync = map['VERSION'];
   }
 
   factory Todo.fromJson(Map<String, dynamic> json) {
     try {
 
       Todo todo = Todo();
-      todo.id = json['objectId'].toString();
-      todo.completed = json['completed'] == 'false' ? 0 : 1;
-      todo.version = int.tryParse(json['version'].toString());
-      todo.createdAt = DateTime.parse('2021-03-30 01:20:13'); //DateFormat("yyyy-MM-dd hh:mm:ss").parse(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(json['createdAt']).toString());
-      todo.updatedAt = DateTime.parse('2021-03-30 01:20:13');
+      print(json);
+      todo.id = int.tryParse(json['id']);
+      print(todo);
+      todo.task = json['task'];
+      print(todo);
+      todo.sync = int.tryParse(json['version']);
+      print(todo);
+      todo.createdAt = DateTime.parse(json['createdAt']); //DateFormat("yyyy-MM-dd hh:mm:ss").parse(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(json['createdAt']).toString());
+      print(todo);
+      todo.updatedAt = DateTime.parse(json['updatedAt']);
+      
+      print(todo);
+      
       return todo;
     } on Exception catch (e) {
       print(e);
@@ -75,14 +83,14 @@ class Todo {
 
   Map<String, dynamic> toJson() => {
         'objectId': id,
-        'completed': completed,
+        'task': task,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
-        'version': version,
+        'version': sync,
       };
 
   @override
   String toString() {
-    return 'Todo{id: $id, completed: $completed, createdAt: $createdAt, updatedAt: $updatedAt, version: $version}';
+    return 'Todo{id: $id, task: $task, createdAt: $createdAt, updatedAt: $updatedAt, version: $sync}';
   }
 }

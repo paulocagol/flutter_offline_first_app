@@ -17,10 +17,10 @@ class TodoDao implements DaoHelper {
         'CREATE TABLE TODO    '
         '(                    '
         ' ID TEXT,            '
-        ' COMPLETED INTEGER,  '
+        ' TASK TEXT,  '
         ' CREATEDAT TEXT,     '
         ' UPDATEDAT TEXT,     '
-        ' VERSION INTEGER     '
+        ' SYNC INTEGER     '
         ');                   ',
       );
     } on Exception catch (e) {
@@ -34,10 +34,10 @@ class TodoDao implements DaoHelper {
       'TODO',
       columns: [
         'ID',
-        'COMPLETED',
+        'TASK',
         'CREATEDAT',
         'UPDATEDAT',
-        'VERSION',
+        'SYNC',
       ],
       where: 'ID = ?',
       whereArgs: [id],
@@ -51,10 +51,10 @@ class TodoDao implements DaoHelper {
         'TODO',
         columns: [
           'ID',
-          'COMPLETED',
+          'TASK',
           'CREATEDAT',
           'UPDATEDAT',
-          'VERSION',
+          'SYNC',
         ],
       );
       if (maps.length > 0) {
@@ -70,17 +70,16 @@ class TodoDao implements DaoHelper {
     if (item is Todo) {
       try {
         print(item);
-        item.id = db
-            .insert('TODO', item.toMap()
-                // {
-                //   'ID': item.id,
-                //   'COMPLETED': item.completed,
-                //   'CREATEDAT': item.createdAt.toString(),// parse(item.createdAt.toString().substring(0, 19)),
-                //   'UPDATEDAT': item.createdAt.toString(),//DateTime.parse(item.updatedAt.toString().substring(0, 19)),
-                //   'VERSION': item.version,
-                // },
-                )
-            .toString();
+        item.id = await db.insert(
+          'TODO',
+          {
+            'ID': item.id,
+            'TASK': item.task,
+            'CREATEDAT': item.createdAt.toString(),
+            'UPDATEDAT': item.createdAt.toString(),
+            'SYNC': item.sync,
+          },
+        );
       } catch (_) {
         update(item);
       }
@@ -91,10 +90,10 @@ class TodoDao implements DaoHelper {
         'TODO',
         columns: [
           'ID',
-          'COMPLETED',
+          'TASK',
           'CREATEDAT',
           'UPDATEDAT',
-          'VERSION',
+          'SYNC',
         ],
       );
       if (maps.length > 0) {
@@ -135,7 +134,8 @@ class TodoDao implements DaoHelper {
   @override
   removeNoneExisting(List list) async {
     if (list is List<Todo>) {
-      List<int> ids = list.map((todo) => todo.id != null ? todo.id : -1).toList();
+      List<int> ids =
+          list.map((todo) => todo.id != null ? todo.id : -1).toList();
       try {
         await db.delete(
           'TODO',
@@ -148,7 +148,8 @@ class TodoDao implements DaoHelper {
   @override
   update(item) async {
     if (item is Todo) {
-      await db.update('TODO', item.toMap(), where: 'ID = ?', whereArgs: [item.id]);
+      await db
+          .update('TODO', item.toMap(), where: 'ID = ?', whereArgs: [item.id]);
     }
   }
 }
