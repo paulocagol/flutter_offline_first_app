@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class Todo {
   int id;
   String task;
@@ -39,7 +37,7 @@ class Todo {
       'TASK': task,
       'CREATEDAT': createdAt,
       'UPDATEDAT': updatedAt,
-      'VERSION': sync,
+      'SYNC': sync,
     };
     if (id != null) {
       map['ID'] = id;
@@ -49,30 +47,21 @@ class Todo {
   }
 
   Todo.fromMap(Map<String, dynamic> map) {
-    id = map['ID'];
-    task = map['task'];
+    id = int.tryParse(map['ID']);
+    task = map['TASK'];
     createdAt = DateTime.parse(map['CREATEDAT']);
     updatedAt = DateTime.parse(map['UPDATEDAT']);
-    sync = map['VERSION'];
+    sync = map['SYNC'];
   }
 
   factory Todo.fromJson(Map<String, dynamic> json) {
     try {
-
       Todo todo = Todo();
-      print(json);
-      todo.id = int.tryParse(json['id']);
-      print(todo);
+      todo.id = json['id'];
       todo.task = json['task'];
-      print(todo);
-      todo.sync = int.tryParse(json['version']);
-      print(todo);
-      todo.createdAt = DateTime.parse(json['createdAt']); //DateFormat("yyyy-MM-dd hh:mm:ss").parse(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(json['createdAt']).toString());
-      print(todo);
+      todo.createdAt = DateTime.parse(json['createdAt']);
       todo.updatedAt = DateTime.parse(json['updatedAt']);
-      
-      print(todo);
-      
+      todo.sync = json['sync'];
       return todo;
     } on Exception catch (e) {
       print(e);
@@ -82,11 +71,11 @@ class Todo {
   }
 
   Map<String, dynamic> toJson() => {
-        'objectId': id,
+        'id': id,
         'task': task,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
-        'version': sync,
+        'sync': sync,
       };
 
   @override

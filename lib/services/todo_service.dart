@@ -13,12 +13,6 @@ class TodoService extends BaseService {
 
   getTodos() async {
     try {
-      // Response response = await client.get(URL + TODO, headers: {
-      //   'X-Parse-Application-Id': 'JBdA3fZBYRKNTlXaWxZzpUNrtTckggovrvSF5gvR',
-      //   'X-Parse-REST-API-Key': 'hkiIVCchQ4LpgcxlHIHh8ZXAq4WHG0MS2nrGhERy',
-      //   'Content-Type': 'application/json'
-      // });
-      
       Response response = await client.get(URL + TODO);
       return List<Todo>.from(
         json.decode(response.body).map(

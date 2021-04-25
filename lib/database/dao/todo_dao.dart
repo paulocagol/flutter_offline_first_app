@@ -58,9 +58,12 @@ class TodoDao implements DaoHelper {
         ],
       );
       if (maps.length > 0) {
-        return maps.map((map) => Todo.fromMap(map)).toList();
+        return maps.map((map) {
+          return Todo.fromMap(map);
+        }).toList();
       }
-    } catch (_) {
+    } catch (e) {
+      print('getAll $e');
       return [];
     }
   }
@@ -69,14 +72,13 @@ class TodoDao implements DaoHelper {
   insert(item) async {
     if (item is Todo) {
       try {
-        print(item);
         item.id = await db.insert(
           'TODO',
           {
             'ID': item.id,
             'TASK': item.task,
             'CREATEDAT': item.createdAt.toString(),
-            'UPDATEDAT': item.createdAt.toString(),
+            'UPDATEDAT': item.updatedAt.toString(),
             'SYNC': item.sync,
           },
         );

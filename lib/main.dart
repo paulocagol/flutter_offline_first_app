@@ -19,7 +19,7 @@ TodoStore todoStore = TodoStore();
 
 class _HomeAppState extends State<HomeApp> {
   Future<List<Todo>> _getAllTodos() async {
-    return todoStore.getTodos();
+    return await todoStore.getTodos();
   }
 
   @override
@@ -28,29 +28,26 @@ class _HomeAppState extends State<HomeApp> {
       appBar: AppBar(
         title: Text(''),
       ),
-      body: Center(
-        child: FutureBuilder(
-          future: _getAllTodos(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return CircularProgressIndicator();
-            } else if (snapshot.data.isNotEmpty) {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  Todo todo = snapshot.data[index];
-                  return Column(
-                    children: <Widget>[
-                      Text(todo.id.toString() + ' - ' + todo.createdAt.toString()),
-                    ],
+      body: FutureBuilder(
+        future: _getAllTodos(),
+        builder: (context, snapTodo) {
+          if (!snapTodo.hasData) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Container(
+              child: ListView.builder(
+                itemCount: snapTodo.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Todo todo = snapTodo.data[index];
+                  return ListTile(
+                    leading: Text(todo.id.toString()),
+                    title: Text(todo.task),
                   );
                 },
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

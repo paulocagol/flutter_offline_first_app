@@ -6,9 +6,8 @@ class TodoRepository extends Repository {
   loadTodos() async {
     await initStore();
     try {
-      List<Todo> newTodo = await todoService.getTodos();
-      await addNoneExisting(store.todoDao, newTodo);
-      await removeNoneExisting(store.todoDao, newTodo);
+      await addNoneExisting(store.todoDao, await todoService.getTodos());
+      await removeNoneExisting(store.todoDao, await todoService.getTodos());
       return await store.todoDao.getAll();
     } catch (_) {
       return await store.todoDao.getAll();
