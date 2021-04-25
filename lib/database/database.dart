@@ -23,6 +23,7 @@ class DataStore implements DataStoreHelper {
     
     path = join(databasesPath, dbName);
     
+    print(path);
     bool dbExists = await databaseExists(path);
     
     if (dbExists) {
